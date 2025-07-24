@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instagram takipçi ve takip edilenlerinizi güvenli bir şekilde analiz edin. Geri takip etmeyenleri ve karşılıklı takip eden kullanıcıları keşfedin.">
+    <meta name="keywords" content="instagram, analiz, takipçi, follower, analytic, social media">
+    <meta name="author" content="Doğukan Parlak">
+    <meta name="theme-color" content="#833ab4">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <title>Instagram Analiz Aracı - Takipçi Analizi</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <nav class="navbar">
+                <div class="nav-left">
+                    <div class="logo">
+                        <i class="fab fa-instagram"></i>
+                        <h1>Instagram Analiz Aracı</h1>
+                    </div>
+                </div>
+                <div class="nav-center">
+                    <p class="subtitle">Takipçi ve takip edilenlerinizi analiz edin</p>
+                </div>
+                <div class="nav-right">
+                    <button class="theme-toggle hover-effects btn-style rotate-icon" id="themeToggle" title="Tema Değiştir">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="info-btn hover-effects btn-style scale-icon" id="infoBtn" title="Bilgi">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-instructions hover-effects lift-effect">
+                <h2><i class="fas fa-info-circle"></i> Nasıl Başlayacağınız</h2>
+                <p>Instagram verilerinizi indirmek için: <strong>Ayarlar → Gizlilik → Veri İndirme</strong> menüsüne gidin ve HTML formatında verilerinizi indirin.</p>
+                <div class="step-indicator">
+                    <div class="step active">1</div>
+                    <div class="step">2</div>
+                    <div class="step">3</div>
+                </div>
+            </div>
+            
+            <div class="upload-card hover-effects card-style">
+                <h2><i class="fas fa-users"></i> Takipçiler Dosyası</h2>
+                <p class="card-description">Instagram verilerinizden <strong>followers_1.html</strong> dosyasını yükleyin</p>
+                <div class="file-input-wrapper">
+                    <input type="file" id="followersFile" accept=".html" class="file-input">
+                    <label for="followersFile" class="file-label">
+                        <i class="fas fa-upload"></i>
+                        Sürükle ya da Seç - followers.html
+                    </label>
+                </div>
+                <div class="file-status" id="followersStatus"></div>
+            </div>
+
+            <div class="upload-card hover-effects card-style">
+                <h2><i class="fas fa-user-plus"></i> Takip Edilenler Dosyası</h2>
+                <p class="card-description">Instagram verilerinizden <strong>following.html</strong> dosyasını yükleyin</p>
+                <div class="file-input-wrapper">
+                    <input type="file" id="followingFile" accept=".html" class="file-input">
+                    <label for="followingFile" class="file-label">
+                        <i class="fas fa-upload"></i>
+                        Sürükle ya da Seç - following.html
+                    </label>
+                </div>
+                <div class="file-status" id="followingStatus"></div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button id="analyzeBtn" class="btn btn-primary hover-effects glow-effect ripple-effect" disabled>
+                <i class="fas fa-chart-line"></i>
+                Analiz Et
+            </button>
+            <button id="clearBtn" class="btn btn-secondary hover-effects scale-effect">
+                <i class="fas fa-trash"></i>
+                Temizle
+            </button>
+        </div>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon followers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="followersCount">0</h3>
+                        <p>Takipçi Sayısı</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon following">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="followingCount">0</h3>
+                        <p>Takip Edilen Sayısı</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon not-following">
+                        <i class="fas fa-user-minus"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="notFollowingCount">0</h3>
+                        <p>Geri Takip Etmeyen</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon mutual">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="mutualCount">0</h3>
+                        <p>Karşılıklı Takip</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabs hover-effects">
+                <div class="hover_background"></div>
+                <div class="swipe-indicator left">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <button class="tab-btn" data-tab="followers">
+                    <i class="fas fa-users"></i>
+                    Takipçiler
+                </button>
+                <button class="tab-btn" data-tab="following">
+                    <i class="fas fa-user-plus"></i>
+                    Takip Edilenler
+                </button>
+                <button class="tab-btn " data-tab="notFollowing">
+                    <i class="fas fa-user-minus"></i>
+                    Geri Takip Etmeyenler
+                </button>
+                <button class="tab-btn " data-tab="mutual">
+                    <i class="fas fa-heart"></i>
+                    Karşılıklı Takip
+                </button>
+                <div class="swipe-indicator right">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <div class="tab-content">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Kullanıcı adı ara...">
+                </div>
+                
+                <div class="list-container">
+                    <div id="followersList" class="user-list active"></div>
+                    <div id="followingList" class="user-list"></div>
+                    <div id="notFollowingList" class="user-list"></div>
+                    <div id="mutualList" class="user-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analiz ediliyor...</p>
+        </div>
+
+        <!-- Info Modal -->
+        <div class="modal" id="infoModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-info-circle"></i> Nasıl Kullanılır?</h2>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="info-step">
+                        <h3><i class="fas fa-download"></i> 1. Adım: Veri İndirme</h3>
+                        <p>Instagram > Ayarlar > Gizlilik ve Güvenlik > Veri İndirme kısmından verilerinizi HTML formatında indirin.</p>
+                    </div>
+                    <div class="info-step">
+                        <h3><i class="fas fa-upload"></i> 2. Adım: Dosya Yükleme</h3>
+                        <p><strong>followers.html</strong> ve <strong>following.html</strong> dosyalarını yükleyin.</p>
+                    </div>
+                    <div class="info-step">
+                        <h3><i class="fas fa-chart-line"></i> 3. Adım: Analiz</h3>
+                        <p>Analiz Et butonuna tıklayarak takipçi analizinizi görün.</p>
+                    </div>
+                    <div class="info-note">
+                        <p><i class="fas fa-shield-alt"></i> <strong>Güvenlik:</strong> Tüm işlemler tamamen tarayıcınızda yapılır, verileriniz hiçbir sunucuya gönderilmez.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fab fa-instagram"></i> Instagram Analiz Aracı</h3>
+                <p>Takipçi ve takip edilenlerinizi güvenli bir şekilde analiz edin.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Özellikler</h4>
+                <ul>
+                    <li><i class="fas fa-check"></i> Takipçi Analizi</li>
+                    <li><i class="fas fa-check"></i> Geri Takip Etmeyen Kullanıcılar</li>
+                    <li><i class="fas fa-check"></i> Karşılıklı Takip</li>
+                    <li><i class="fas fa-check"></i> Arama ve Filtreleme</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Güvenlik</h4>
+                <ul>
+                    <li><i class="fas fa-shield-alt"></i> Veriler sunucuya gönderilmez</li>
+                    <li><i class="fas fa-lock"></i> Tamamen tarayıcı tabanlı</li>
+                    <li><i class="fas fa-eye-slash"></i> Gizlilik korunur</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>İletişim</h4>
+                <div class="social-links">
+                    <a href="https://github.com/dogukannparlak" class="social-link hover-effects social-style spin-icon" title="GitHub" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://x.com/home" class="social-link hover-effects social-style spin-icon" title="Twitter" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/dogukannparlak/" class="social-link hover-effects social-style spin-icon" title="LinkedIn" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://www.instagram.com/dogukanparlak_/" class="social-link hover-effects social-style spin-icon" title="Instagram" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Instagram Analiz Aracı. Tüm hakları saklıdır.</p>
+            <p>Bu araç Instagram ile resmi olarak bağlantılı değildir.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-to-top hover-effects btn-style scale-icon" id="scrollToTop" style="display: none;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
