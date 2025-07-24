@@ -160,15 +160,9 @@ Bu araç sadece kendi Instagram hesabınızın verilerini analiz etmek için tas
 ## 👨‍💻 Geliştirici
 
 **Doğukan Parlak**
-- GitHub: [@dogukan](https://github.com/dogukan)
-- LinkedIn: [Doğukan Parlak](https://linkedin.com/in/dogukan-parlak)
+- GitHub: [@dogukan](https://github.com/dogukannparlak)
+- LinkedIn: [Doğukan Parlak](https://linkedin.com/in/dogukannparlak)
 
-## 📞 Destek
-
-Herhangi bir sorun yaşarsanız veya öneriniz varsa:
-- Issue açın
-- E-posta gönderin
-- Pull request oluşturun
 
 ## 📄 Lisans
 
