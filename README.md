@@ -10,32 +10,38 @@ Bu proje, Instagram takipçi ve takip edilenlerinizi analiz etmenizi sağlayan g
 - **Modern Web Arayüzü**: Responsive ve kullanıcı dostu web arayüzü
 - **Güvenli**: Verileriniz sadece yerel olarak işlenir, hiçbir yere gönderilmez
 - **Tema Desteği**: Açık/koyu tema seçenekleri
-- **Glassmorphism Tasarım**: Modern Apple tarzı cam efektli tasarım
+-
 
 ## 🚀 Kurulum
 
 ### Gereksinimler
 
-- Python 3.6+
-- BeautifulSoup4 kütüphanesi
+- Python 3.6 veya üzeri
+- Git (projeyi klonlamak için)
 
 ### Kurulum Adımları
 
-1. **Projeyi klonlayın veya indirin:**
+1. **Projeyi klonlayın:**
    ```bash
-   git clone <repository-url>
-   cd instagram-follower-analyzer
+   git clone https://github.com/dogukannparlak/instagram-analiz-araci.git
+   cd instagram-analiz-araci
    ```
 
-2. **Gerekli kütüphaneleri yükleyin:**
+2. **Güncellemeleri kontrol edin:**
    ```bash
-   pip install beautifulsoup4
+   git pull origin main
    ```
 
-3. **Instagram verilerinizi indirin:**
-   - Instagram uygulaması/web sitesi → Ayarlar → Gizlilik → Veri İndirme
-   - HTML formatını seçin
-   - İndirilen dosyalardan `followers_1.html` ve `following.html` dosyalarını proje klasörüne kopyalayın
+3. **Gerekli kütüphaneleri yükleyin:**
+ 
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Instagram verilerinizi edinin:**
+   - Instagram uygulaması/web sitesi → Ayarlar → Gizlilik ve Güvenlik → Veri İndirme
+   - HTML formatını seçin ve "Bağlantılar" kategorisini dahil edin
+   - İndirilen ZIP dosyasından `followers_1.html` ve `following.html` dosyalarını proje klasörüne kopyalayın
 
 ## 📱 Kullanım
 
@@ -123,31 +129,10 @@ instagram-follower-analyzer/
 
 Bu araç tamamen yerel olarak çalışır ve verilerinizi hiçbir yere göndermez. Tüm analizler bilgisayarınızda/tarayıcınızda gerçekleşir.
 
-## 📋 Sistem Gereksinimleri
-
-- **Python**: 3.6 veya üzeri
-- **İşletim Sistemi**: Windows, macOS, Linux
-- **RAM**: En az 512MB
-- **Tarayıcı**: Chrome, Firefox, Safari, Edge (modern tarayıcılar)
 
 ## 🚨 Yasal Uyarı
 
 Bu araç sadece kendi Instagram hesabınızın verilerini analiz etmek için tasarlanmıştır. Instagram'ın Kullanım Koşullarına uygun şekilde kullanın.
-
-## 🛠️ Geliştirme
-
-### Katkıda Bulunma
-
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push edin (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
-
-### Bilinen Sorunlar
-
-- HTML dosya formatı değişikliklerinde kod güncellenmesi gerekebilir
-- Çok büyük takipçi listelerinde performans düşüklüğü olabilir
 
 ## 📝 Sürüm Notları
 
@@ -160,7 +145,7 @@ Bu araç sadece kendi Instagram hesabınızın verilerini analiz etmek için tas
 ## 👨‍💻 Geliştirici
 
 **Doğukan Parlak**
-- GitHub: [@dogukan](https://github.com/dogukannparlak)
+- GitHub: [dogukannparlak](https://github.com/dogukannparlak)
 - LinkedIn: [Doğukan Parlak](https://linkedin.com/in/dogukannparlak)
 
 
