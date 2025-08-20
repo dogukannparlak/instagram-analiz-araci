@@ -10,9 +10,10 @@ class InstagramAnalyzer {
     }
 
     initializeTheme() {
-        // Check for saved theme preference or default to light mode
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        // Check for saved theme preference or default to dark mode
+        const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
+        document.body.setAttribute('data-theme', savedTheme);
         this.updateThemeIcon(savedTheme);
     }
 
@@ -21,28 +22,83 @@ class InstagramAnalyzer {
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
         document.documentElement.setAttribute('data-theme', newTheme);
+        document.body.setAttribute('data-theme', newTheme);
+        
+        // Modal açıksa onun da temasını güncelle
+        const modal = document.getElementById('infoModal');
+        if (modal && modal.style.display === 'flex') {
+            modal.setAttribute('data-theme', newTheme);
+        }
+        
         localStorage.setItem('theme', newTheme);
         this.updateThemeIcon(newTheme);
     }
 
     updateThemeIcon(theme) {
-        const themeIcon = document.querySelector('#themeToggle i');
-        if (theme === 'dark') {
-            themeIcon.className = 'fas fa-sun';
-        } else {
-            themeIcon.className = 'fas fa-moon';
-        }
+        const themeButtons = document.querySelectorAll('.theme-toggle');
+        themeButtons.forEach(button => {
+            const sunIcon = button.querySelector('.sun-icon');
+            const moonIcon = button.querySelector('.moon-icon');
+            
+            if (theme === 'dark') {
+                if (sunIcon) sunIcon.style.display = 'none';
+                if (moonIcon) moonIcon.style.display = 'block';
+            } else {
+                if (sunIcon) sunIcon.style.display = 'block';
+                if (moonIcon) moonIcon.style.display = 'none';
+            }
+        });
     }
 
     initializeEventListeners() {
-        // Theme toggle listener
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            this.toggleTheme();
+        // Theme toggle listeners for all theme buttons
+        document.querySelectorAll('.theme-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                this.toggleTheme();
+            });
         });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenuToggle.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                document.body.classList.toggle('mobile-menu-open');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.classList.remove('mobile-menu-open');
+                }
+            });
+
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.classList.remove('mobile-menu-open');
+                });
+            });
+        }
 
         // Info modal listeners
         document.getElementById('infoBtn').addEventListener('click', () => {
             this.openModal();
+        });
+
+        // Mobile info button listener
+        document.getElementById('mobileInfoBtn').addEventListener('click', () => {
+            this.openModal();
+            // Close mobile menu when info is opened
+            this.closeMobileMenu();
         });
 
         document.getElementById('closeModal').addEventListener('click', () => {
@@ -97,6 +153,9 @@ class InstagramAnalyzer {
 
         // Scroll to top functionality
         this.initializeScrollToTop();
+
+        // Back button functionality
+        this.initializeBackButton();
     }
 
     initializeScrollToTop() {
@@ -116,6 +175,41 @@ class InstagramAnalyzer {
                 scrollToTopBtn.style.display = 'none';
             }
         });
+    }
+
+    initializeBackButton() {
+        const backBtn = document.getElementById('backBtn');
+        
+        backBtn.addEventListener('click', () => {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Show/hide back button based on page state
+        this.updateBackButtonVisibility();
+        
+        // Listen for navigation changes
+        window.addEventListener('popstate', () => {
+            this.updateBackButtonVisibility();
+        });
+    }
+
+    updateBackButtonVisibility() {
+        const backBtn = document.getElementById('backBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        // Show back button if results are visible or if there's history
+        if (resultsSection && resultsSection.style.display !== 'none' && 
+            getComputedStyle(resultsSection).display !== 'none') {
+            backBtn.style.display = 'inline-flex';
+        } else if (window.history.length > 1) {
+            backBtn.style.display = 'inline-flex';
+        } else {
+            backBtn.style.display = 'none';
+        }
     }
 
     initializeDragAndDrop() {
@@ -238,6 +332,9 @@ class InstagramAnalyzer {
             
             // Show results section
             document.getElementById('resultsSection').style.display = 'block';
+            
+            // Update back button visibility
+            this.updateBackButtonVisibility();
             
             // Smooth scroll to results
             document.getElementById('resultsSection').scrollIntoView({ 
@@ -440,6 +537,9 @@ class InstagramAnalyzer {
         // Hide results
         document.getElementById('resultsSection').style.display = 'none';
 
+        // Update back button visibility
+        this.updateBackButtonVisibility();
+
         // Disable analyze button
         document.getElementById('analyzeBtn').disabled = true;
 
@@ -462,13 +562,30 @@ class InstagramAnalyzer {
     }
 
     openModal() {
-        document.getElementById('infoModal').style.display = 'flex';
+        const modal = document.getElementById('infoModal');
+        modal.style.display = 'flex';
+        
+        // Modal'a mevcut tema attribute'unu ekle
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        modal.setAttribute('data-theme', currentTheme);
+        
         document.body.style.overflow = 'hidden';
     }
 
     closeModal() {
         document.getElementById('infoModal').style.display = 'none';
         document.body.style.overflow = 'auto';
+    }
+
+    closeMobileMenu() {
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.classList.remove('mobile-menu-open');
+        }
     }
 }
 
@@ -539,6 +656,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const tabButtons = tabs.querySelectorAll('.tab-btn');
         const leftArrow = tabs.querySelector('.swipe-indicator.left');
         const rightArrow = tabs.querySelector('.swipe-indicator.right');
+        
+        // Mobile touch scrolling for tabs
+        let isScrolling = false;
         
         function getCurrentTabIndex() {
             let currentIndex = 0;
@@ -645,3 +765,63 @@ function initTabsHoverEffect() {
 
 // Sayfa yüklendiğinde çalıştır
 document.addEventListener('DOMContentLoaded', initTabsHoverEffect);
+
+// Wizard carousel keyboard navigation and animation
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    const steps = document.querySelectorAll('.wizard-step');
+    const leftBtn = document.querySelector('.wizard-arrow-left');
+    const rightBtn = document.querySelector('.wizard-arrow-right');
+    let current = 0;
+    function showStep(idx, direction = 0) {
+      steps.forEach((step, i) => {
+        if (i === idx) {
+          step.style.display = 'flex';
+          step.classList.remove('fade-in-left', 'fade-in-right');
+          if (direction < 0) step.classList.add('fade-in-left');
+          if (direction > 0) step.classList.add('fade-in-right');
+        } else {
+          step.style.display = 'none';
+          step.classList.remove('fade-in-left', 'fade-in-right');
+        }
+      });
+      leftBtn.disabled = (idx === 0);
+      rightBtn.disabled = (idx === steps.length - 1);
+    }
+    leftBtn.addEventListener('click', () => {
+      if (current > 0) { current--; showStep(current, -1); }
+    });
+    rightBtn.addEventListener('click', () => {
+      if (current < steps.length - 1) { current++; showStep(current, 1); }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+      if (e.key === 'ArrowLeft') {
+        if (current > 0) { current--; showStep(current, -1); }
+      }
+      if (e.key === 'ArrowRight') {
+        if (current < steps.length - 1) { current++; showStep(current, 1); }
+      }
+    });
+    showStep(current);
+  });
+})();
+// Wizard carousel animation CSS
+const wizardAnimStyle = document.createElement('style');
+wizardAnimStyle.innerHTML = `
+.wizard-step.fade-in-right {
+  animation: wizardFadeInRight 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.wizard-step.fade-in-left {
+  animation: wizardFadeInLeft 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes wizardFadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes wizardFadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+`;
+document.head.appendChild(wizardAnimStyle);
