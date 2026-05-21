@@ -1,0 +1,21 @@
+# Instagram kullanıcı verileri (asla commit edilmemeli)
+followers_1.html
+followers.html
+following.html
+*.html.backup
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
