@@ -4,6 +4,9 @@ followers.html
 following.html
 *.html.backup
 
+# Test / örnek dosyalar
+example_*.html
+
 # Python
 __pycache__/
 *.py[cod]

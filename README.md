@@ -3,7 +3,7 @@
 > Instagram'dan indirdiğim takipçi verilerini elle karşılaştırmaktan yorulunca bu küçük aracı yazdım. Verileriniz bilgisayarınızdan çıkmaz — ne API ne scraping var, sadece sizin export ettiğiniz HTML dosyaları.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.6+](https://img.shields.io/badge/Python-3.6%2B-blue.svg)](https://www.python.org/)
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![GitHub](https://img.shields.io/badge/GitHub-dogukannparlak%2Finstagram--analiz--araci-181717?logo=github)](https://github.com/dogukannparlak/instagram-analiz-araci)
 
 ---
@@ -140,7 +140,7 @@ Tarayıcıda [http://localhost:8000](http://localhost:8000) adresini açın ve H
 
 ### Gereksinimler
 
-- Python 3.6 veya üzeri
+- Python 3.9 veya üzeri
 - pip
 - Git (projeyi klonlamak için)
 
@@ -208,6 +208,9 @@ python takip.py
 
 # Geri takip etmeyenleri bul (her iki dosya gerekli)
 python takipetmeyen.py
+
+# Export klasöründeki tüm bağlantı dosyalarını analiz et
+python baglantilar.py --dir /path/to/connections/followers_and_following
 ```
 
 ### Test scripti
@@ -253,13 +256,16 @@ instagram-analiz-araci/
 ├── LICENSE                   # MIT lisansı
 ├── requirements.txt          # Python bağımlılıkları
 │
+├── instagram_parser.py       # Paylaşılan çok formatlı HTML parser
 ├── takipçi.py                # CLI: takipçi listesi
 ├── takip.py                  # CLI: takip edilenler listesi
 ├── takipetmeyen.py           # CLI: geri takip etmeyenler + oran
+├── baglantilar.py            # CLI: export klasörü analizi
 ├── test.py                   # Örnek verilerle test scripti
 │
-├── example_followers.html    # Test için örnek takipçi verisi
-├── example_following.html    # Test için örnek takip verisi
+├── example_followers.html    # Test için örnek takipçi verisi (2026 format)
+├── example_following.html    # Test için örnek takip verisi (2026 format)
+├── example_table.html        # Test için tablo formatı örneği
 │
 └── web/                      # Statik web arayüzü
     ├── index.html
@@ -277,12 +283,21 @@ Kullanıcı tarafından sağlanan dosyalar (`followers_1.html`, `following.html`
 
 ### Veri çıkarma mantığı
 
-Hem Python hem JavaScript tarafında aynı fikir kullanılıyor: HTML içindeki `instagram.com` linklerinden kullanıcı adı metni okunur.
+Hem Python hem JavaScript tarafında aynı çok stratejili parser kullanılır:
+
+1. `instagram.com` link metni
+2. Link href (`/_u/` dahil)
+3. `h2` başlıkları (following formatı)
+4. Tablo satırları (`Kullanıcı adı` / `Username`)
+
+Desteklenen export dosyaları: `followers_*.html`, `following.html`, `blocked_profiles.html`, `close_friends.html`, `removed_suggestions.html`, `pending_follow_requests.html`, `recent_follow_requests.html`, `recently_unfollowed_profiles.html`, `hide_story_from.html`
 
 **Python (BeautifulSoup):**
 
 ```python
-usernames = [a.text.strip() for a in soup.find_all("a", href=True) if "instagram.com" in a["href"]]
+from instagram_parser import parse_export_file, parse_export_directory
+result = parse_export_file("following.html")
+data = parse_export_directory("connections/followers_and_following")
 ```
 
 **JavaScript (DOMParser):**
@@ -347,7 +362,7 @@ Bu proje aktif bir side project. Aklımdaki bazı fikirler:
 - [ ] Sonuçları CSV / JSON olarak dışa aktarma
 - [ ] "Seni takip etmeyenler" listesi (ters yönlü analiz)
 - [ ] GitHub Pages üzerinde statik demo
-- [ ] Instagram export format değişikliklerine daha dayanıklı parser
+- [x] Instagram export format değişikliklerine daha dayanıklı parser
 - [ ] CLI'ye karşılıklı takip listesi eklenmesi
 
 Bir fikriniz veya bug bildiriminiz varsa [issue açmaktan](https://github.com/dogukannparlak/instagram-analiz-araci/issues) çekinmeyin.
