@@ -1,0 +1,19 @@
+# Instagram Takipçi Analiz Aracı
+
+> Instagram'ın resmi veri dışa aktarımındaki takipçi ve takip edilen HTML dosyalarını tarayıcıda analiz eden, ücretsiz ve kurulumsuz bir araç. Sizi geri takip etmeyenleri ve karşılıklı takipçileri listeler.
+
+Adres: https://instagramanaliz.dogukanparlak.com/
+Yapan: Doğukan Parlak (https://dogukanparlak.com). Kaynak kod: https://github.com/dogukannparlak/instagram-analiz-araci
+
+## Nasıl kullanılır
+
+1. Instagram'da Ayarlar > Hesaplar Merkezi > Bilgilerin ve İzinlerin > Bilgilerini Dışa Aktar yolunu izleyin; bağlantılar bölümünü, tarih aralığı "Her zaman", biçim "HTML" olarak dışa aktarın.
+2. İndirdiğiniz ZIP'ten followers_1.html (veya followers.html) ve following.html dosyalarını (ya da followers_and_following klasörünü) sayfaya yükleyin.
+3. "Analiz Et" düğmesine basın; sonuçlar (takipçi, takip edilen, geri takip etmeyenler, karşılıklı takipçiler vb.) sayfada görünür.
+
+## Sınırlar ve gizlilik
+
+- Tüm işlem kullanıcının tarayıcısında yapılır; yüklenen dosyalar sunucuya gönderilmez. Instagram API'si ya da canlı profil taraması kullanılmaz.
+- Yalnızca kullanıcının kendi hesabının resmi dışa aktarımı analiz edilir; başka birinin hesabı analiz edilemez.
+- Sayfa JavaScript gerektirir. Arayüz Türkçedir.
+- Instagram ile bağlantılı ya da onun onayladığı bir araç değildir.

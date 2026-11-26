@@ -1,0 +1,23 @@
+# https://instagramanaliz.dogukanparlak.com - herkese acik; tum tarayicilara izin var.
+
+User-agent: *
+Allow: /
+
+# AI arama / yanit motoru ve kullanici adina gezen ajanlar
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Allow: /
+
+# AI egitim / veri seti tarayicilari
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://instagramanaliz.dogukanparlak.com/sitemap.xml
